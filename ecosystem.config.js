@@ -13,10 +13,6 @@ module.exports = {
         NODE_ENV: 'production',
         PORT: 3031
       },
-      env_development: {
-        NODE_ENV: 'development',
-        PORT: 3031
-      },
       env_production: {
         NODE_ENV: 'production',
         PORT: 3031
@@ -24,7 +20,10 @@ module.exports = {
       error_file: './logs/err.log',
       out_file: './logs/out.log',
       log_file: './logs/combined.log',
-      time: true
+      time: true,
+      // Ensure the app is built before starting
+      pre_deploy_local: 'npm run build',
+      post_deploy: 'npm install && npm run build && pm2 reload ecosystem.config.js --env production'
     }
   ]
 };
