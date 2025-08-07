@@ -7,7 +7,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Globe, BarChart3, TableIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { ForeignTradingData, ForeignTradingItem, ForeignTradingPeriod } from '@/types';
+import { ForeignTradingData, ForeignTradingPeriod } from '@/types';
 
 // Mock data for testing
 const mockData: ForeignTradingData = {
@@ -40,11 +40,7 @@ const mockData: ForeignTradingData = {
   to_date: '2025-01-06'
 };
 
-interface ForeignTradingTestProps {
-  className?: string;
-}
-
-export default function ForeignTradingTest({ className = '' }: ForeignTradingTestProps) {
+export default function ForeignTradingTest() {
   const [data, setData] = useState<ForeignTradingData | null>(null);
   const [selectedPeriod, setSelectedPeriod] = useState<ForeignTradingPeriod>('today');
   const [selectedTab, setSelectedTab] = useState('charts');
@@ -65,17 +61,7 @@ export default function ForeignTradingTest({ className = '' }: ForeignTradingTes
     return `${Math.abs(value).toFixed(1)} tỷ`;
   };
 
-  const formatQuantity = (quantity: number): string => {
-    if (!quantity || isNaN(quantity)) {
-      return '0';
-    }
-    if (quantity >= 1000000) {
-      return `${(quantity / 1000000).toFixed(1)}M`;
-    } else if (quantity >= 1000) {
-      return `${(quantity / 1000).toFixed(0)}K`;
-    }
-    return quantity.toString();
-  };
+
 
   const getPeriodLabel = (period: ForeignTradingPeriod): string => {
     switch (period) {
@@ -93,7 +79,7 @@ export default function ForeignTradingTest({ className = '' }: ForeignTradingTes
     <div className="container mx-auto p-6">
       <h1 className="text-3xl font-bold mb-6">Test Foreign Trading Chart</h1>
       
-      <Card className={cn("w-full", className)}>
+      <Card className="w-full">
         <CardHeader className="pb-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">

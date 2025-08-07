@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Card } from '@/components/ui/card';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import { TrendingUp, Activity, BarChart3 } from 'lucide-react';
@@ -254,7 +254,7 @@ export default function TechnicalAnalysisComponent({ ticker }: TechnicalAnalysis
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchTechnicalData = async (timeFrame: TechnicalTimeFrame) => {
+  const fetchTechnicalData = useCallback(async (timeFrame: TechnicalTimeFrame) => {
     setLoading(true);
     setError(null);
 
@@ -267,7 +267,7 @@ export default function TechnicalAnalysisComponent({ ticker }: TechnicalAnalysis
     } finally {
       setLoading(false);
     }
-  };
+  }, [ticker]);
 
   useEffect(() => {
     fetchTechnicalData(selectedTimeFrame);

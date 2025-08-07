@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { ShareholdersData } from '@/types/shareholders';
 import { ShareholdersService } from '@/services/shareholdersService';
 
@@ -14,7 +14,7 @@ export const useShareholdersData = (ticker: string): UseShareholdersDataReturn =
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     if (!ticker) {
       setError('Ticker is required');
       setLoading(false);
@@ -24,7 +24,7 @@ export const useShareholdersData = (ticker: string): UseShareholdersDataReturn =
     try {
       setLoading(true);
       setError(null);
-      
+
       const shareholdersData = await ShareholdersService.getAllShareholdersData(ticker);
       setData(shareholdersData);
     } catch (err) {
@@ -34,7 +34,7 @@ export const useShareholdersData = (ticker: string): UseShareholdersDataReturn =
     } finally {
       setLoading(false);
     }
-  };
+  }, [ticker]);
 
   const refetch = async () => {
     await fetchData();

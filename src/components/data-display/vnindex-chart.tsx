@@ -86,7 +86,7 @@ export default function VNIndexChart({
   };
 
   // Custom tooltip
-  const CustomTooltip = ({ active, payload }: { active?: boolean; payload?: Array<{ payload: { timestamp: number; close: number; volume: number } }> }) => {
+  const CustomTooltip = ({ active, payload }: { active?: boolean; payload?: Array<{ payload: PriceData }> }) => {
     if (active && payload && payload.length) {
       const data = payload[0].payload;
       return (

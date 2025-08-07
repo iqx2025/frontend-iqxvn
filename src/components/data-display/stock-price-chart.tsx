@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 
 
 import { Card, CardContent } from '@/components/ui/card';
@@ -55,10 +55,10 @@ export default function StockPriceChart({
   const [error, setError] = useState<string | null>(null);
   const { theme } = useTheme();
 
-  const fetchPriceData = async (period: ChartPeriod) => {
+  const fetchPriceData = useCallback(async (period: ChartPeriod) => {
     setLoading(true);
     setError(null);
-    
+
     try {
       const data = await ApiService.getHistoricalPrices(ticker, period);
       setPriceData(data);
@@ -68,7 +68,7 @@ export default function StockPriceChart({
     } finally {
       setLoading(false);
     }
-  };
+  }, [ticker]);
 
   useEffect(() => {
     fetchPriceData(selectedPeriod);
