@@ -91,7 +91,7 @@ export interface WordPressPost {
   featured_image?: WordPressFeaturedImage;
   categories: WordPressCategory[];
   tags: WordPressTag[];
-  custom_fields?: Record<string, any>;
+  custom_fields?: Record<string, unknown>;
   meta?: {
     reading_time?: number;
     word_count?: number;
@@ -130,5 +130,5 @@ export type WordPressSinglePostResponse = WordPressApiResponse<WordPressPost>;
 export interface WordPressApiError {
   code: string;
   message: string;
-  data?: any;
+  data?: unknown;
 }

@@ -2,8 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
+
 import { Card, CardContent } from '@/components/ui/card';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import { Toggle } from '@/components/ui/toggle';
@@ -73,7 +72,7 @@ export default function StockPriceChart({
 
   useEffect(() => {
     fetchPriceData(selectedPeriod);
-  }, [ticker, selectedPeriod]);
+  }, [ticker, selectedPeriod, fetchPriceData]);
 
   const handlePeriodChange = (period: ChartPeriod) => {
     setSelectedPeriod(period);
@@ -85,9 +84,7 @@ export default function StockPriceChart({
   const priceChange = priceData.length > 1
     ? priceData[priceData.length - 1].close - priceData[0].close
     : 0;
-  const priceChangePercent = priceData.length > 1
-    ? ((priceData[priceData.length - 1].close - priceData[0].close) / priceData[0].close) * 100
-    : 0;
+
 
   const isPositive = priceChange >= 0;
 

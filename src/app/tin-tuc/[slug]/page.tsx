@@ -44,7 +44,7 @@ export async function generateMetadata({ params }: NewsDetailPageProps): Promise
         images: post.featured_image ? [post.featured_image.url] : [],
       },
     };
-  } catch (error) {
+  } catch {
     return {
       title: 'Bài viết không tìm thấy - IQX',
       description: 'Bài viết bạn đang tìm kiếm không tồn tại hoặc đã bị xóa.',

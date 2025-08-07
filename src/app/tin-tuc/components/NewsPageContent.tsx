@@ -15,7 +15,7 @@ import {
 import Link from "next/link";
 import Image from "next/image";
 import wordpressService from "@/services/wordpressService";
-import { WordPressPost, WordPressCategory } from "@/types/wordpress";
+import { WordPressPost, WordPressCategory, WordPressPagination } from "@/types/wordpress";
 
 interface NewsPageContentProps {
   searchParams: Promise<{
@@ -55,7 +55,7 @@ export default async function NewsPageContent({ searchParams }: NewsPageContentP
 
   let posts: WordPressPost[] = [];
   let categories: WordPressCategory[] = [];
-  let pagination: any = null;
+  let pagination: WordPressPagination | null = null;
   let error: string | null = null;
 
   try {
@@ -77,7 +77,7 @@ export default async function NewsPageContent({ searchParams }: NewsPageContentP
     });
 
     posts = response.posts;
-    pagination = response.pagination;
+    pagination = response.pagination || null;
   } catch (err) {
     console.error('Error fetching news:', err);
     error = 'Không thể tải tin tức. Vui lòng thử lại sau.';
@@ -103,12 +103,7 @@ export default async function NewsPageContent({ searchParams }: NewsPageContentP
     return urlParams.toString() ? `?${urlParams.toString()}` : '';
   };
 
-  const createSearchUrl = (query: string) => {
-    const urlParams = new URLSearchParams();
-    if (query) urlParams.set('search', query);
-    if (selectedCategory) urlParams.set('category', selectedCategory);
-    return urlParams.toString() ? `?${urlParams.toString()}` : '';
-  };
+
 
   return (
     <div className="container mx-auto px-4 py-8">

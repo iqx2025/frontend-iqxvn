@@ -5,8 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { TrendingUp, Globe, BarChart3, TableIcon } from 'lucide-react';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { Globe, BarChart3, TableIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { ForeignTradingData, ForeignTradingItem, ForeignTradingPeriod } from '@/types';
 
@@ -87,91 +86,8 @@ export default function ForeignTradingTest({ className = '' }: ForeignTradingTes
     }
   };
 
-  // Prepare data for symmetric charts
-  const prepareChartData = () => {
-    if (!data) return { buyData: [], sellData: [] };
 
-    const buyData = data.top_buy.slice(0, 10).map(item => ({
-      symbol: item.symbol,
-      value: Math.abs(item.net_val),
-      buyQty: item.buy_qtty,
-      buyVal: item.buy_val,
-      sellQty: item.sell_qtty,
-      sellVal: item.sell_val,
-      netVal: item.net_val
-    }));
 
-    const sellData = data.top_sell.slice(0, 10).map(item => ({
-      symbol: item.symbol,
-      value: Math.abs(item.net_val),
-      buyQty: item.buy_qtty,
-      buyVal: item.buy_val,
-      sellQty: item.sell_qtty,
-      sellVal: item.sell_val,
-      netVal: item.net_val
-    }));
-
-    return { buyData, sellData };
-  };
-
-  // Custom tooltip for charts
-  const CustomTooltip = ({ active, payload, label }: any) => {
-    if (active && payload && payload.length) {
-      const data = payload[0].payload;
-      return (
-        <div className="bg-background border border-border rounded-lg p-3 shadow-lg">
-          <p className="font-semibold">{label}</p>
-          <p className="text-sm text-muted-foreground">
-            Giá trị ròng: <span className="font-medium">{formatValue(data.netVal)}</span>
-          </p>
-          <p className="text-sm text-muted-foreground">
-            Mua: <span className="font-medium">{formatValue(data.buyVal)}</span> ({formatQuantity(data.buyQty)})
-          </p>
-          <p className="text-sm text-muted-foreground">
-            Bán: <span className="font-medium">{formatValue(data.sellVal)}</span> ({formatQuantity(data.sellQty)})
-          </p>
-        </div>
-      );
-    }
-    return null;
-  };
-
-  const renderTradingItem = (item: ForeignTradingItem, index: number, type: 'buy' | 'sell') => {
-    const isBuy = type === 'buy';
-    const value = Math.abs(item.net_val);
-    const maxValue = Math.max(
-      ...(data?.top_buy.slice(0, 10).map(i => Math.abs(i.net_val)) || []),
-      ...(data?.top_sell.slice(0, 10).map(i => Math.abs(i.net_val)) || [])
-    );
-    const barWidth = maxValue > 0 ? (value / maxValue) * 100 : 0;
-
-    return (
-      <div key={`${item.symbol}-${index}`} className="flex items-center gap-3 py-2">
-        {/* Symbol */}
-        <div className="w-20 text-sm font-medium text-foreground text-right">
-          {item.symbol}
-        </div>
-
-        {/* Bar */}
-        <div className="flex-1 relative">
-          <div
-            className={cn(
-              "h-8 rounded transition-all duration-300",
-              isBuy ? "bg-green-500" : "bg-red-500"
-            )}
-            style={{ width: `${barWidth}%` }}
-          />
-
-          {/* Value label */}
-          <div className="absolute right-2 top-1/2 transform -translate-y-1/2">
-            <span className="text-sm font-semibold text-white">
-              {formatValue(item.net_val)}
-            </span>
-          </div>
-        </div>
-      </div>
-    );
-  };
 
   return (
     <div className="container mx-auto p-6">

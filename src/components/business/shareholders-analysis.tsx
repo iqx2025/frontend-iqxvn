@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Button } from '@/components/ui/button';
+
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
   Users,
@@ -336,7 +336,7 @@ const FundHoldingsHighlight: React.FC<{ data: FundHolding[] }> = ({ data }) => {
 };
 
 export default function ShareholdersAnalysis({ ticker, className }: ShareholdersAnalysisProps) {
-  const { data, loading, error, refetch } = useShareholdersData(ticker);
+  const { data, loading, error } = useShareholdersData(ticker);
   const [activeTab, setActiveTab] = useState("overview");
 
   if (loading) {

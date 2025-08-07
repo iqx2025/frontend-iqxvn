@@ -271,7 +271,7 @@ export default function TechnicalAnalysisComponent({ ticker }: TechnicalAnalysis
 
   useEffect(() => {
     fetchTechnicalData(selectedTimeFrame);
-  }, [ticker, selectedTimeFrame]);
+  }, [ticker, selectedTimeFrame, fetchTechnicalData]);
 
   const handleTimeFrameChange = (timeFrame: TechnicalTimeFrame) => {
     setSelectedTimeFrame(timeFrame);

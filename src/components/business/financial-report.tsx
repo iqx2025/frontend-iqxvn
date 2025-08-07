@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Button } from '@/components/ui/button';
+
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
   FileText,
@@ -17,7 +17,7 @@ import {
 import { cn } from '@/lib/utils';
 import { useFinancialData } from '@/hooks/useFinancialData';
 import { FinancialReportProps, FinancialReportData } from '@/types/financial';
-import { formatFinancialAmount, formatFinancialDate, getFinancialChangeColor } from '@/utils/formatters';
+import { formatFinancialAmount, getFinancialChangeColor } from '@/utils/formatters';
 import FinancialTableWithPeriodToggle from '@/components/data-display/financial-table-with-period-toggle';
 
 // Statistics Overview Component
@@ -174,7 +174,7 @@ const FinancialReportSkeleton = () => (
 );
 
 export default function FinancialReport({ ticker, className }: FinancialReportProps) {
-  const { data, loading, error, refetch } = useFinancialData(ticker);
+  const { data, loading, error } = useFinancialData(ticker);
   const [activeTab, setActiveTab] = useState("income-statement");
 
   if (loading) {

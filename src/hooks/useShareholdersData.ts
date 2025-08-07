@@ -42,7 +42,7 @@ export const useShareholdersData = (ticker: string): UseShareholdersDataReturn =
 
   useEffect(() => {
     fetchData();
-  }, [ticker]);
+  }, [ticker, fetchData]);
 
   return {
     data,

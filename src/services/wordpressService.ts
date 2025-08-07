@@ -11,14 +11,14 @@ import {
   WordPressPostsResponse,
   WordPressCategoriesResponse,
   WordPressSinglePostResponse,
-  WordPressApiError,
+
 } from '@/types/wordpress';
 
 const BASE_URL = 'https://news.iqx.vn';
 const API_BASE = '/wp-json/news-api/v1';
 
 class WordPressService {
-  private async fetchApi<T>(endpoint: string, params?: Record<string, any>): Promise<T> {
+  private async fetchApi<T>(endpoint: string, params?: Record<string, unknown>): Promise<T> {
     const url = new URL(`${BASE_URL}${API_BASE}${endpoint}`);
     
     if (params) {
@@ -58,7 +58,7 @@ class WordPressService {
    * Get categories
    */
   async getCategories(params?: WordPressCategoriesParams): Promise<WordPressCategory[]> {
-    const response = await this.fetchApi<WordPressCategoriesResponse>('/categories', params);
+    const response = await this.fetchApi<WordPressCategoriesResponse>('/categories', params as Record<string, unknown>);
     return response.data;
   }
 
@@ -66,7 +66,7 @@ class WordPressService {
    * Get posts
    */
   async getPosts(params?: WordPressPostsParams): Promise<WordPressPostsResponse> {
-    return this.fetchApi<WordPressPostsResponse>('/posts', params);
+    return this.fetchApi<WordPressPostsResponse>('/posts', params as Record<string, unknown>);
   }
 
   /**
