@@ -6,7 +6,7 @@ import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Globe, BarChart3, TableIcon } from 'lucide-react';
-import { cn } from '@/lib/utils';
+
 import { ForeignTradingData, ForeignTradingPeriod } from '@/types';
 
 // Mock data for testing
