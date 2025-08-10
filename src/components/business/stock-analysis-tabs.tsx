@@ -204,20 +204,20 @@ export default function StockAnalysisTabsComponent({ ticker }: StockAnalysisTabs
   return (
     <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
       {/* Tab Navigation */}
-      <TabsList className="grid w-full grid-cols-4">
-        <TabsTrigger value="chart">
+      <TabsList className="w-full justify-start gap-1 overflow-x-auto sm:overflow-visible">
+        <TabsTrigger value="chart" className="flex-none whitespace-nowrap px-4 py-2">
           <TrendingUp className="h-4 w-4" />
           Biểu đồ giá
         </TabsTrigger>
-        <TabsTrigger value="technical">
+        <TabsTrigger value="technical" className="flex-none whitespace-nowrap px-4 py-2">
           <BarChart3 className="h-4 w-4" />
           Phân tích kỹ thuật
         </TabsTrigger>
-        <TabsTrigger value="financial">
+        <TabsTrigger value="financial" className="flex-none whitespace-nowrap px-4 py-2">
           <FileText className="h-4 w-4" />
           Báo cáo tài chính
         </TabsTrigger>
-        <TabsTrigger value="shareholders">
+        <TabsTrigger value="shareholders" className="flex-none whitespace-nowrap px-4 py-2">
           <Users className="h-4 w-4" />
           Cổ đông
         </TabsTrigger>

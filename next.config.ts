@@ -28,6 +28,26 @@ const nextConfig: NextConfig = {
         port: "",
         pathname: "/**",
       },
+      // nqs.1cdn.vn
+      {
+        protocol: "https",
+        hostname: "nqs.1cdn.vn",
+        port: "",
+        pathname: "/**",
+      },
+      // photo.znews.vn
+      {
+        protocol: "https",
+        hostname: "photo.znews.vn",
+        port: "",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "t.ex-cdn.com",
+        port: "",
+        pathname: "/**",
+      },
     ],
   },
 };

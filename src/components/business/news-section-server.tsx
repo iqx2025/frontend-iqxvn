@@ -309,12 +309,12 @@ export default async function NewsSectionServer({
 
             {/* Pagination */}
             {totalPages > 1 && (
-              <div className="flex items-center justify-between mt-6 pt-6 border-t">
-                <div className="text-sm text-gray-600">
+              <div className="mt-6 pt-6 border-t flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                <div className="text-xs text-gray-600 sm:text-sm">
                   Trang {currentPage} / {totalPages} ({totalRecords} tin tức)
                 </div>
-                
-                <div className="flex items-center gap-2">
+
+                <div className="flex items-center gap-2 justify-between sm:justify-end w-full sm:w-auto">
                   {currentPage > 1 && (
                     <Link href={createPageUrl(currentPage - 1)}>
                       <Button variant="outline" size="sm" className="flex items-center gap-1">

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
@@ -42,6 +42,24 @@ export default function VNIndexChart({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const { theme } = useTheme();
+
+  // Responsive measurement
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const [containerWidth, setContainerWidth] = useState<number>(0);
+  const isMobile = containerWidth < 640; // Tailwind sm breakpoint
+
+  useEffect(() => {
+    if (!containerRef.current) return;
+    const el = containerRef.current;
+    const ro = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        const cr = entry.contentRect;
+        setContainerWidth(cr.width);
+      }
+    });
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
 
   const fetchVNIndexData = async (period: ChartPeriod) => {
     setLoading(true);
@@ -134,8 +152,8 @@ export default function VNIndexChart({
   const renderChart = () => {
     const commonProps = {
       data: priceData,
-      height: showVolume ? height : height,
-      margin: { top: 5, right: 30, left: 20, bottom: 5 },
+      // Let ResponsiveContainer control the size; only set margins here
+      margin: { top: 5, right: isMobile ? 12 : 30, left: isMobile ? 10 : 20, bottom: 5 },
     };
 
     const commonAxisProps = {
@@ -143,13 +161,14 @@ export default function VNIndexChart({
         dataKey: 'timestamp',
         axisLine: false,
         tickLine: false,
-        tick: { fontSize: 12, fill: 'hsl(var(--muted-foreground))' },
+        tick: { fontSize: isMobile ? 10 : 12, fill: 'hsl(var(--muted-foreground))' },
         tickFormatter: formatXAxisLabel,
+        minTickGap: isMobile ? 20 : 10,
       },
       yAxis: {
         axisLine: false,
         tickLine: false,
-        tick: { fontSize: 12, fill: 'hsl(var(--muted-foreground))' },
+        tick: { fontSize: isMobile ? 10 : 12, fill: 'hsl(var(--muted-foreground))' },
         domain: ['dataMin - 10', 'dataMax + 10'],
       },
       volumeYAxis: {
@@ -283,15 +302,15 @@ export default function VNIndexChart({
   return (
     <Card className={cn("w-full", className)}>
       <CardHeader className="pb-4">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex items-center gap-3 min-w-0">
             <div className="p-2 rounded-lg bg-blue-100 dark:bg-blue-900/20">
               <Activity className="h-5 w-5 text-blue-600 dark:text-blue-400" />
             </div>
             <div>
               <CardTitle className="text-lg font-semibold">VN-Index</CardTitle>
-              <div className="flex items-center gap-2 mt-1">
-                <span className="text-2xl font-bold">
+              <div className="flex items-center gap-2 mt-1 flex-wrap">
+                <span className="text-xl sm:text-2xl font-bold">
                   {currentPrice.toFixed(2)}
                 </span>
                 <Badge variant={isPositive ? "default" : "destructive"} className="flex items-center gap-1">
@@ -306,7 +325,7 @@ export default function VNIndexChart({
             </div>
           </div>
           
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 flex-wrap sm:flex-nowrap self-end sm:self-auto shrink-0 justify-end">
             <ToggleGroup
               type="single"
               value={chartType}
@@ -328,7 +347,7 @@ export default function VNIndexChart({
               aria-label="Toggle volume"
             >
               <BarChart3 className="h-4 w-4" />
-              <span className="ml-1 text-xs">Volume</span>
+              <span className="ml-1 text-xs hidden sm:inline">Volume</span>
             </Toggle>
           </div>
         </div>
@@ -351,19 +370,19 @@ export default function VNIndexChart({
 
       <CardContent>
         {loading && (
-          <div className="flex items-center justify-center h-64">
+          <div className="flex items-center justify-center w-full overflow-hidden h-[220px] sm:h-[260px] md:h-[300px] lg:h-[350px]">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
           </div>
         )}
 
         {error && (
-          <div className="flex items-center justify-center h-64 text-destructive">
+          <div className="flex items-center justify-center w-full overflow-hidden h-[220px] sm:h-[260px] md:h-[300px] lg:h-[350px] text-destructive">
             <p>{error}</p>
           </div>
         )}
 
         {!loading && !error && priceData.length > 0 && (
-          <div className="h-64">
+          <div ref={containerRef} className="w-full overflow-hidden h-[220px] sm:h-[260px] md:h-[300px] lg:h-[350px]">
             <ResponsiveContainer width="100%" height="100%">
               {renderChart()}
             </ResponsiveContainer>
@@ -371,7 +390,7 @@ export default function VNIndexChart({
         )}
 
         {!loading && !error && priceData.length === 0 && (
-          <div className="flex items-center justify-center h-64 text-muted-foreground">
+          <div className="flex items-center justify-center w-full overflow-hidden h-[220px] sm:h-[260px] md:h-[300px] lg:h-[350px] text-muted-foreground">
             <p>Không có dữ liệu để hiển thị</p>
           </div>
         )}

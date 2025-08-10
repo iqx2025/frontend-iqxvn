@@ -455,12 +455,12 @@ export default function NewsSection({ ticker, className }: NewsSectionProps) {
 
             {/* Pagination */}
             {totalPages > 1 && (
-              <div className="flex items-center justify-between mt-6 pt-4 border-t">
-                <div className="text-sm text-gray-600">
+              <div className="mt-6 pt-4 border-t flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                <div className="text-xs text-gray-600 sm:text-sm">
                   Hiển thị {(currentPage - 1) * pageSize + 1} - {Math.min(currentPage * pageSize, totalRecords)} trong tổng số {totalRecords} tin tức
                 </div>
-                
-                <div className="flex items-center gap-2">
+
+                <div className="flex items-center gap-2 justify-between sm:justify-end w-full sm:w-auto">
                   <Button
                     variant="outline"
                     size="sm"
@@ -470,8 +470,12 @@ export default function NewsSection({ ticker, className }: NewsSectionProps) {
                     <ChevronLeft className="h-4 w-4" />
                     Trước
                   </Button>
-                  
-                  <div className="flex items-center gap-1">
+
+                  {/* Mobile: compact page indicator */}
+                  <span className="sm:hidden text-xs px-2">Trang {currentPage}/{totalPages}</span>
+
+                  {/* Desktop: numbered pages */}
+                  <div className="hidden sm:flex items-center gap-1">
                     {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
                       const page = i + 1;
                       return (
@@ -500,7 +504,7 @@ export default function NewsSection({ ticker, className }: NewsSectionProps) {
                       </>
                     )}
                   </div>
-                  
+
                   <Button
                     variant="outline"
                     size="sm"

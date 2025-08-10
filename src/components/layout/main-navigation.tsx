@@ -80,7 +80,7 @@ export function MainNavigation() {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container flex h-16 items-center">
+      <div className="container px-4 sm:px-6 lg:px-8 flex h-16 items-center">
         {/* Logo */}
         <Link href="/" className="mr-6 flex items-center space-x-2 group">
           <div className="relative">
@@ -170,7 +170,7 @@ export function MainNavigation() {
         </div>
 
         {/* Right Side Actions */}
-        <div className="flex items-center justify-end space-x-2">
+        <div className="ml-auto flex items-center justify-end space-x-2">
           {/* Search Button for Mobile */}
           <Button
             variant="ghost"
@@ -253,7 +253,7 @@ export function MainNavigation() {
       {/* Mobile Search Bar */}
       {isSearchOpen && (
         <div className="border-t md:hidden">
-          <div className="container py-3">
+          <div className="container px-4 sm:px-6 lg:px-8 py-3">
             <StockSearch
               onCompanySelect={handleCompanySelect}
               placeholder="Tìm kiếm mã chứng khoán..."
@@ -266,7 +266,7 @@ export function MainNavigation() {
       {/* Mobile Navigation */}
       {isMobileMenuOpen && (
         <div className="border-t md:hidden">
-          <div className="container py-4">
+          <div className="container px-4 sm:px-6 lg:px-8 py-4">
             <nav className="flex flex-col space-y-2">
               {navigationItems.map((item) => (
                 <Link

@@ -363,10 +363,10 @@ const StockBusinessProfile: React.FC<StockBusinessProfileProps> = ({ ticker, sum
         <Card className="border-0 shadow-sm">
           <div className="p-4">
             {/* Tab Navigation */}
-            <div className="flex items-center gap-1 mb-4 bg-muted/30 p-1 rounded-lg">
+            <div className="flex items-center gap-1 mb-4 bg-muted/30 p-1 rounded-lg overflow-x-auto sm:overflow-visible -mx-2 px-2 sm:mx-0 snap-x snap-mandatory">
               <button
                 onClick={() => setActiveTab('overview')}
-                className={`flex-1 flex items-center justify-center gap-2 px-3 py-2 text-sm font-medium rounded-md transition-all ${
+                className={`sm:flex-1 shrink-0 flex items-center justify-center gap-2 px-3 py-2 text-xs sm:text-sm font-medium rounded-md transition-all whitespace-nowrap snap-start ${
                   activeTab === 'overview'
                     ? 'bg-background text-foreground shadow-sm'
                     : 'text-muted-foreground hover:text-foreground hover:bg-muted/50'
@@ -378,7 +378,7 @@ const StockBusinessProfile: React.FC<StockBusinessProfileProps> = ({ ticker, sum
               </button>
               <button
                 onClick={() => setActiveTab('services')}
-                className={`flex-1 flex items-center justify-center gap-2 px-3 py-2 text-sm font-medium rounded-md transition-all ${
+                className={`sm:flex-1 shrink-0 flex items-center justify-center gap-2 px-3 py-2 text-xs sm:text-sm font-medium rounded-md transition-all whitespace-nowrap snap-start ${
                   activeTab === 'services'
                     ? 'bg-background text-foreground shadow-sm'
                     : 'text-muted-foreground hover:text-foreground hover:bg-muted/50'
@@ -390,7 +390,7 @@ const StockBusinessProfile: React.FC<StockBusinessProfileProps> = ({ ticker, sum
               </button>
               <button
                 onClick={() => setActiveTab('strategy')}
-                className={`flex-1 flex items-center justify-center gap-2 px-3 py-2 text-sm font-medium rounded-md transition-all ${
+                className={`sm:flex-1 shrink-0 flex items-center justify-center gap-2 px-3 py-2 text-xs sm:text-sm font-medium rounded-md transition-all whitespace-nowrap snap-start ${
                   activeTab === 'strategy'
                     ? 'bg-background text-foreground shadow-sm'
                     : 'text-muted-foreground hover:text-foreground hover:bg-muted/50'
@@ -402,7 +402,7 @@ const StockBusinessProfile: React.FC<StockBusinessProfileProps> = ({ ticker, sum
               </button>
               <button
                 onClick={() => setActiveTab('risks')}
-                className={`flex-1 flex items-center justify-center gap-2 px-3 py-2 text-sm font-medium rounded-md transition-all ${
+                className={`sm:flex-1 shrink-0 flex items-center justify-center gap-2 px-3 py-2 text-xs sm:text-sm font-medium rounded-md transition-all whitespace-nowrap snap-start ${
                   activeTab === 'risks'
                     ? 'bg-background text-foreground shadow-sm'
                     : 'text-muted-foreground hover:text-foreground hover:bg-muted/50'
