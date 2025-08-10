@@ -9,7 +9,7 @@ export const TVChartContainer = (props: Partial<ChartingLibraryWidgetOptions>) =
 		const widgetOptions: ChartingLibraryWidgetOptions = {
 			symbol: props.symbol,
 			// BEWARE: no trailing slash is expected in feed URL
-			datafeed: new (window as any).Datafeeds.UDFCompatibleDatafeed(
+			datafeed: new window.Datafeeds.UDFCompatibleDatafeed(
 				"/api/tv",
 				undefined,
 				{
@@ -32,7 +32,7 @@ export const TVChartContainer = (props: Partial<ChartingLibraryWidgetOptions>) =
 			autosize: props.autosize
 		};
 
-		const tvWidget = new (window as any).TradingView.widget(widgetOptions);
+		const tvWidget = new window.TradingView.widget(widgetOptions);
 
 		tvWidget.onChartReady(() => {
 			tvWidget.headerReady().then(() => {

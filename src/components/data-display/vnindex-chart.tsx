@@ -382,7 +382,7 @@ export default function VNIndexChart({
         )}
 
         {!loading && !error && priceData.length > 0 && (
-          <div ref={containerRef} className="w-full overflow-hidden h-[220px] sm:h-[260px] md:h-[300px] lg:h-[350px]">
+          <div ref={containerRef} className="w-full overflow-hidden h-[220px] sm:h-[260px] md:h-[300px] lg:h-[350px]" style={{ height: `${height}px` }}>
             <ResponsiveContainer width="100%" height="100%">
               {renderChart()}
             </ResponsiveContainer>
