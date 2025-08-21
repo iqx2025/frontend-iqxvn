@@ -14,15 +14,15 @@ export default function N8nChat() {
         target: '#n8n-chat',
         mode: 'window',
         chatInputKey: 'chatInput',
-        chatSessionKey: 'chatSession',
+        chatSessionKey: 'sessionId',
         metadata: {},
         initialMessages: [
           'Xin chào! Tôi là trợ lý AI của IQX. Tôi có thể giúp bạn về thông tin chứng khoán, phân tích tài chính, và tin tức thị trường. Bạn cần hỗ trợ gì?'
         ],
         i18n: {
           en: {
-            title: 'IQX AI Assistant',
-            subtitle: 'Powered by n8n',
+            title: 'IQX AI',
+            subtitle: 'Powered by iqx.vn',
             footer: '',
             getStarted: 'Bắt đầu chat',
             inputPlaceholder: 'Nhập tin nhắn...',
