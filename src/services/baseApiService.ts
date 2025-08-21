@@ -42,11 +42,19 @@ export class BaseApiService {
     options?: RequestInit
   ): Promise<T> {
     try {
+      // Add Referer header for VietCap APIs
+      const headers: HeadersInit = {
+        'Content-Type': 'application/json',
+        ...options?.headers,
+      };
+      
+      // Check if this is a VietCap API call and add Referer header
+      if (url.includes('vietcap.com.vn')) {
+        headers['Referer'] = 'https://trading.vietcap.com.vn';
+      }
+      
       const response = await fetch(url, {
-        headers: {
-          'Content-Type': 'application/json',
-          ...options?.headers,
-        },
+        headers,
         ...options,
       });
 
@@ -84,11 +92,19 @@ export class BaseApiService {
     try {
       const { revalidate = 300, ...fetchOptions } = options || {};
       
+      // Add Referer header for VietCap APIs
+      const headers: HeadersInit = {
+        'Content-Type': 'application/json',
+        ...fetchOptions.headers,
+      };
+      
+      // Check if this is a VietCap API call and add Referer header
+      if (url.includes('vietcap.com.vn')) {
+        headers['Referer'] = 'https://trading.vietcap.com.vn';
+      }
+      
       const response = await fetch(url, {
-        headers: {
-          'Content-Type': 'application/json',
-          ...fetchOptions.headers,
-        },
+        headers,
         next: { 
           revalidate 
         },

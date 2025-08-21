@@ -33,6 +33,7 @@ export class NewsService {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
+          'Referer': 'https://trading.vietcap.com.vn',
         },
         // Add cache control for better performance
         next: { revalidate: 300 }, // Cache for 5 minutes
@@ -144,6 +145,7 @@ export class NewsService {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
+          'Referer': 'https://trading.vietcap.com.vn',
         },
         // Add cache control for better performance
         next: { revalidate: 600 }, // Cache for 10 minutes
