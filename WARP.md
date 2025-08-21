@@ -92,9 +92,12 @@ NEXT_PUBLIC_API_BASE_URL=http://localhost:3002
 
 #### External APIs Used
 - **Simplize API**: Historical price data and charts
-- **VietCap API**: Technical analysis indicators
+- **VietCap API**: Technical analysis indicators (requires Referer: https://trading.vietcap.com.vn)
 - **24hmoney API**: Foreign trading data
 - **WordPress API**: News content from news.iqx.vn
+
+#### Important API Requirements
+- **VietCap APIs**: All requests to vietcap.com.vn domains require the `Referer: https://trading.vietcap.com.vn` header. This is automatically handled in `BaseApiService` for all fetch requests to VietCap endpoints.
 
 ### Data Flow Patterns
 

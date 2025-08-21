@@ -43,11 +43,11 @@ export class BaseApiService {
   ): Promise<T> {
     try {
       // Add Referer header for VietCap APIs
-      const headers: HeadersInit = {
+      const headers: Record<string, string> = {
         'Content-Type': 'application/json',
         ...options?.headers,
       };
-      
+
       // Check if this is a VietCap API call and add Referer header
       if (url.includes('vietcap.com.vn')) {
         headers['Referer'] = 'https://trading.vietcap.com.vn';

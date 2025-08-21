@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:3002';
 
-export async function GET(_request: NextRequest) {
+export async function GET() {
   try {
     const backendUrl = `${API_BASE_URL}/api/tv/time`;
     const response = await fetch(backendUrl, { cache: 'no-store' });
@@ -12,7 +12,7 @@ export async function GET(_request: NextRequest) {
       status: response.status,
       headers: { 'Content-Type': 'text/plain; charset=utf-8' },
     });
-  } catch (_error) {
+  } catch {
     // Fallback: current server epoch seconds to keep TV polling happy
     const nowSec = Math.floor(Date.now() / 1000).toString();
     return new NextResponse(nowSec, { status: 200, headers: { 'Content-Type': 'text/plain; charset=utf-8' } });
