@@ -45,7 +45,7 @@ export class BaseApiService {
       // Add Referer header for VietCap APIs
       const headers: Record<string, string> = {
         'Content-Type': 'application/json',
-        ...options?.headers,
+        ...(options?.headers as Record<string, string> || {}),
       };
 
       // Check if this is a VietCap API call and add Referer header

@@ -26,6 +26,7 @@ export default function N8nChat() {
             footer: '',
             getStarted: 'Bắt đầu chat',
             inputPlaceholder: 'Nhập tin nhắn...',
+            closeButtonTooltip: 'Đóng chat',
           }
         },
         theme: {

@@ -4,12 +4,7 @@ import "./globals.css";
 import { MainNavigation } from "@/components/layout/main-navigation";
 import { Footer } from "@/components/layout/footer";
 import { ThemeProvider } from "@/components/layout/theme-provider";
-import dynamic from "next/dynamic";
-
-// Dynamically import N8nChat to avoid SSR issues
-const N8nChat = dynamic(() => import("@/components/chat/N8nChat"), {
-  ssr: false,
-});
+import ChatWrapper from "@/components/chat/ChatWrapper";
 
 const manrope = Manrope({
   variable: "--font-manrope",
@@ -43,7 +38,7 @@ export default function RootLayout({
               {children}
             </main>
             <Footer />
-            <N8nChat />
+            <ChatWrapper />
           </div>
         </ThemeProvider>
       </body>
