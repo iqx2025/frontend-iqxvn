@@ -160,8 +160,9 @@ export class ApiService extends BaseApiService {
    */
   static async getTechnicalAnalysis(ticker: string, timeFrame: TechnicalTimeFrame = 'ONE_DAY') {
     try {
+      // Use internal API route instead of direct VietCap API call
       const response = await this.fetchWithErrorHandling<TechnicalAnalysisResponse>(
-        `https://iq.vietcap.com.vn/api/iq-insight-service/v1/company/${ticker.toUpperCase()}/technical/${timeFrame}`
+        this.getInternalApiUrl(`/vietcap/technical/${ticker.toUpperCase()}/${timeFrame}`)
       );
 
       if (!response.successful) {

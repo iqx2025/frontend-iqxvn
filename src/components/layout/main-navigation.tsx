@@ -289,7 +289,7 @@ export function MainNavigation() {
             <StockSearch
               onCompanySelect={handleCompanySelect}
               placeholder="Tìm kiếm mã chứng khoán..."
-              className="w-full [&>div>div]:shadow-lg"
+              className="w-full"
             />
           </div>
         </div>

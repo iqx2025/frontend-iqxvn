@@ -156,8 +156,8 @@ export function StockSearch({
 
       {/* Search Suggestions */}
       {isOpen && (
-        <Card className="absolute top-full left-0 right-0 mt-1 z-50 max-h-96 overflow-y-auto shadow-lg border">
-          <CardContent className="p-0">
+        <Card className="absolute top-full left-0 right-0 mt-1 z-50 max-h-96 overflow-y-auto border">
+          <CardContent className="p-0 !shadow-none">
             {loading && (
               <div className="p-4 text-center text-muted-foreground">
                 <div className="flex items-center justify-center gap-2">

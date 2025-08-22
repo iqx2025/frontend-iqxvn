@@ -1,12 +1,9 @@
 import { NewsResponse, NewsApiParams, NewsDetail, NewsSentiment } from '@/types/news';
 
-/**
- * Service for fetching news data from Vietcap API
- */
-export class NewsService {
-  private static readonly BASE_URL = 'https://ai.vietcap.com.vn/api/v2';
-  private static readonly API_URL = 'https://ai.vietcap.com.vn/api';
-
+  /**
+   * Service for fetching news data from Vietcap API
+   */
+  export class NewsService {
   /**
    * Fetch news information for a specific ticker
    */
@@ -27,13 +24,13 @@ export class NewsService {
       if (params.newsfrom) searchParams.append('newsfrom', params.newsfrom);
       if (params.language) searchParams.append('language', params.language);
 
-      const url = `${this.BASE_URL}/news_info?${searchParams.toString()}`;
+      // Use internal API route instead of direct VietCap API call
+      const url = `/api/vietcap/news?${searchParams.toString()}`;
       
       const response = await fetch(url, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          'Referer': 'https://trading.vietcap.com.vn',
         },
         // Add cache control for better performance
         next: { revalidate: 300 }, // Cache for 5 minutes
@@ -139,13 +136,13 @@ export class NewsService {
       searchParams.append('slug', slug);
       searchParams.append('language', language);
 
-      const url = `${this.API_URL}/news_from_slug?${searchParams.toString()}`;
+      // Use internal API route instead of direct VietCap API call
+      const url = `/api/vietcap/news/detail?${searchParams.toString()}`;
 
       const response = await fetch(url, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          'Referer': 'https://trading.vietcap.com.vn',
         },
         // Add cache control for better performance
         next: { revalidate: 600 }, // Cache for 10 minutes

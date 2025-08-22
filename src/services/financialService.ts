@@ -17,11 +17,6 @@ import {
 } from '@/types/financial';
 
 /**
- * VietCap API endpoints
- */
-const VIETCAP_BASE_URL = 'https://iq.vietcap.com.vn/api/iq-insight-service/v1';
-
-/**
  * Financial Data Service class
  */
 export class FinancialService extends BaseApiService {
@@ -30,7 +25,8 @@ export class FinancialService extends BaseApiService {
    * Fetches financial metrics metadata for a company
    */
   static async getFinancialMetrics(ticker: string): Promise<FinancialMetricsData> {
-    const url = `${VIETCAP_BASE_URL}/company/${ticker}/financial-statement/metrics`;
+    // Use internal API route instead of direct VietCap API call
+    const url = this.getInternalApiUrl(`/vietcap/financial/${ticker.toUpperCase()}/metrics`);
     
     try {
       const response = await this.withRetry(async () => {
@@ -60,7 +56,8 @@ export class FinancialService extends BaseApiService {
     ticker: string, 
     section: FinancialStatementSection
   ): Promise<FinancialStatementData> {
-    const url = `${VIETCAP_BASE_URL}/company/${ticker}/financial-statement?section=${section}`;
+    // Use internal API route instead of direct VietCap API call
+    const url = this.getInternalApiUrl(`/vietcap/financial/${ticker.toUpperCase()}/statement?section=${section}`);
     
     try {
       const response = await this.withRetry(async () => {
