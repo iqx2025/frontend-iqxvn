@@ -182,7 +182,7 @@ export default function MarketSentimentDashboard({
         <MoneyFlowDistribution data={data.moneyFlow} />
 
         {/* Market Breadth - Bottom right */}
-        <MarketBreadthChart data={data.breadth} />
+        <MarketBreadthChart />
 
         {/* Price Change Distribution - Spans full width on mobile, half on desktop */}
         <div className="lg:col-span-1">

@@ -8,6 +8,7 @@ import StockPriceChart from '@/components/data-display/stock-price-chart';
 import TechnicalAnalysisComponent from '@/components/business/technical-analysis';
 import ShareholdersAnalysis from '@/components/business/shareholders-analysis';
 import FinancialReport from '@/components/business/financial-report';
+import ScoreContent from '../score-content';
 
 interface StockAnalysisTabsProps {
   ticker: string;
@@ -199,12 +200,12 @@ const FinancialReportSkeleton = () => (
 );
 
 export default function StockAnalysisTabsComponent({ ticker }: StockAnalysisTabsProps) {
-  const [activeTab, setActiveTab] = useState("technical");
+  const [activeTab, setActiveTab] = useState("chart");
 
   return (
     <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full mb-8">
       {/* Tab Navigation */}
-      <TabsList className="w-full justify-start gap-1 overflow-x-auto sm:overflow-visible">
+      <TabsList className="w-full grid grid-cols-5 gap-1 overflow-x-auto sm:overflow-visible">
         <TabsTrigger value="chart" className="flex-none whitespace-nowrap px-4 py-2">
           <TrendingUp className="h-4 w-4" />
           Biểu đồ giá
@@ -216,6 +217,12 @@ export default function StockAnalysisTabsComponent({ ticker }: StockAnalysisTabs
         <TabsTrigger value="financial" className="flex-none whitespace-nowrap px-4 py-2">
           <FileText className="h-4 w-4" />
           Báo cáo tài chính
+        </TabsTrigger>
+
+
+        <TabsTrigger value="score" className="flex-none whitespace-nowrap px-4 py-2">
+          <FileText className="h-4 w-4" />
+          Mô hình SCORE
         </TabsTrigger>
         <TabsTrigger value="shareholders" className="flex-none whitespace-nowrap px-4 py-2">
           <Users className="h-4 w-4" />
@@ -239,6 +246,16 @@ export default function StockAnalysisTabsComponent({ ticker }: StockAnalysisTabs
           <TechnicalAnalysisComponent
             ticker={ticker}
             className="border-0 bg-transparent"
+          />
+        </Suspense>
+      </TabsContent>
+
+
+
+      <TabsContent value="score" className="mt-0">
+        <Suspense fallback={<TechnicalAnalysisSkeleton />}>
+          <ScoreContent
+            ticker={ticker}
           />
         </Suspense>
       </TabsContent>

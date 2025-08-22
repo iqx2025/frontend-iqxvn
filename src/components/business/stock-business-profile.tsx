@@ -108,7 +108,7 @@ const StockBusinessProfile: React.FC<StockBusinessProfileProps> = ({ ticker, sum
     <div className={`${className}`} role="main" aria-label={`Stock information for ${ticker} - ${summary.nameVi}`}>
       {/* Main Stock Info Card - Compact Layout */}
       <Card className="border-0 shadow-sm" role="region" aria-labelledby="stock-header">
-        <CardContent className="p-6">
+        <CardContent className="p-6 space-y-6">
           {/* Modern Header Section with Improved Hierarchy */}
           <div className="space-y-6">
             {/* Primary Header Row */}
@@ -182,14 +182,6 @@ const StockBusinessProfile: React.FC<StockBusinessProfileProps> = ({ ticker, sum
                       ({summary.pctChange > 0 ? '+' : ''}{summary.pctChange.toFixed(2)}%)
                     </span>
                   </div>
-                  <Badge
-                    variant="outline"
-                    className={`mt-2 text-xs ${getSignalColor(summary.taSignal1d)}`}
-                    aria-label={`Technical analysis signal: ${summary.taSignal1d}`}
-                    role="status"
-                  >
-                    Tín hiệu: {summary.taSignal1d.toUpperCase()}
-                  </Badge>
                 </div>
               </div>
             </div>
@@ -215,7 +207,7 @@ const StockBusinessProfile: React.FC<StockBusinessProfileProps> = ({ ticker, sum
                 <div className="text-sm font-semibold tabular-nums">{formatNumber(summary.epsRatio)}</div>
               </div>
 
-              <div className="space-y-1">
+              <div className="space-y-1 hidden">
                 <div className="text-xs text-muted-foreground">Chất lượng doanh nghiệp</div>
                 <div className="text-sm font-semibold">
                   <span className="text-orange-500">Không ổn định</span>
@@ -238,7 +230,7 @@ const StockBusinessProfile: React.FC<StockBusinessProfileProps> = ({ ticker, sum
                 <div className="text-sm font-semibold tabular-nums">{formatNumber(summary.bookValue)}</div>
               </div>
 
-              <div className="space-y-1">
+              <div className="space-y-1 hidden">
                 <div className="text-xs text-muted-foreground">Rủi ro</div>
                 <div className="text-sm font-semibold">
                   <span className="text-yellow-500">Trung bình</span>
@@ -256,12 +248,7 @@ const StockBusinessProfile: React.FC<StockBusinessProfileProps> = ({ ticker, sum
                 <div className="text-sm font-semibold tabular-nums">{summary.evEbitdaRatio.toFixed(2)}</div>
               </div>
 
-              <div className="space-y-1">
-                <div className="text-xs text-muted-foreground">Theo dõi</div>
-                <div className="text-sm font-semibold tabular-nums">{formatNumber(summary.watchlistCount || 0)}</div>
-              </div>
-
-              <div className="space-y-1">
+              <div className="space-y-1 hidden">
                 <div className="text-xs text-muted-foreground">Định giá</div>
                 <div className="text-sm font-semibold">
                   <span className="text-green-500">Hấp dẫn</span>
@@ -359,7 +346,7 @@ const StockBusinessProfile: React.FC<StockBusinessProfileProps> = ({ ticker, sum
       </Card>
 
       {/* Business Information - Tab-based Compact Design */}
-      <div className="mt-6" role="region" aria-labelledby="business-info">
+      <div className="mt-6 hidden" role="region" aria-labelledby="business-info">
         <Card className="border-0 shadow-sm">
           <div className="p-4">
             {/* Tab Navigation */}

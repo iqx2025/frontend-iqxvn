@@ -102,12 +102,12 @@ export function IndustryTrendTable({ initialData }: IndustryTrendTableProps) {
   };
 
   // Get badge variant for RRG phase and sector stage
-  const getPhaseBadgeVariant = (phase: string) => {
+  const getPhaseBadgeVariant = (phase: string): 'default' | 'secondary' | 'destructive' | 'outline' => {
     switch (phase) {
       case 'Tăng giá':
-        return 'success';
+        return 'default'; // was 'success'
       case 'Tích lũy':
-        return 'warning';
+        return 'secondary'; // was 'warning'
       case 'Giảm giá':
         return 'destructive';
       case 'Phân phối':
@@ -118,49 +118,53 @@ export function IndustryTrendTable({ initialData }: IndustryTrendTableProps) {
   };
 
   // Format cell value
-  const formatCellValue = (key: keyof IndustryTrendItem, value: any, item?: IndustryTrendItem) => {
+  const formatCellValue = (key: keyof IndustryTrendItem, value: unknown, item?: IndustryTrendItem) => {
     switch (key) {
       case 'symbol':
         // Make symbol clickable with link to stock detail page
         return (
           <Link 
-            href={`/ma-chung-khoan/${value.toLowerCase()}`}
+            href={`/ma-chung-khoan/${String(value).toLowerCase()}`}
             className="font-semibold text-primary hover:underline"
           >
-            {value}
+            {String(value)}
           </Link>
         );
       case 'close_price':
-        return formatPrice(value);
+        return formatPrice(Number(value));
       case 'return_1d_pct':
       case 'return_1w_pct':
-      case 'return_1m_pct':
+      case 'return_1m_pct': {
+        const numValue = Number(value);
         return (
           <span className={cn(
             'font-medium',
-            value > 0 ? 'text-green-500' : value < 0 ? 'text-red-500' : ''
+            numValue > 0 ? 'text-green-500' : numValue < 0 ? 'text-red-500' : ''
           )}>
-            {value > 0 ? '+' : ''}{formatPercentage(value * 100)}
+            {numValue > 0 ? '+' : ''}{formatPercentage(numValue * 100)}
           </span>
         );
+      }
       case 'volume':
       case 'avg_volume_1w':
       case 'avg_volume_1m':
-        return formatNumber(value);
+        return formatNumber(Number(value));
       case 'beta_90d':
-      case 'beta_180d':
-        return value?.toFixed(2) || '0.00';
+      case 'beta_180d': {
+        const numValue = Number(value);
+        return !isNaN(numValue) ? numValue.toFixed(2) : '0.00';
+      }
       case 'exchange':
-        return <Badge variant="outline">{value}</Badge>;
+        return <Badge variant="outline">{String(value)}</Badge>;
       case 'rrg_phase':
       case 'sector_stage':
         return value ? (
-          <Badge variant={getPhaseBadgeVariant(value) as any}>
-            {value}
+          <Badge variant={getPhaseBadgeVariant(String(value))}>
+            {String(value)}
           </Badge>
         ) : '-';
       default:
-        return value || '-';
+        return String(value || '-');
     }
   };
 

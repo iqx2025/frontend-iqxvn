@@ -32,7 +32,7 @@ interface MiniTrendChartProps {
 /**
  * Custom tooltip for the market behavior chart
  */
-const CustomTooltip = ({ active, payload, label }: any) => {
+const CustomTooltip = ({ active, payload, label }: { active?: boolean; payload?: Array<{ payload: MarketBehaviorChartData }>; label?: string }) => {
   if (active && payload && payload.length > 0) {
     const data = payload[0].payload;
     

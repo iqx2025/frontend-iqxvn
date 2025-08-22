@@ -67,7 +67,7 @@ const StatsCard = ({
   label: string;
   value: string | number;
   change?: string;
-  icon?: any;
+  icon?: React.ComponentType<{ className?: string }>;
   trend?: 'up' | 'down' | 'neutral';
 }) => {
   const trendColors = {

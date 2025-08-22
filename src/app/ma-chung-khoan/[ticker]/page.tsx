@@ -1,9 +1,6 @@
 import StockBusinessProfile from "@/components/business/stock-business-profile";
 import StockAnalysisTabsComponent from "@/components/business/stock-analysis-tabs";
 import NewsSection from "@/components/business/news-section";
-import ZScoreChart from "@/components/business/z-score-chart";
-import FScoreChart from "@/components/business/f-score-chart";
-import FScoreDetails from "@/components/business/f-score-details";
 import { ErrorDisplay } from "@/components/feedback/error-display";
 import { TickerPageProps } from "@/types/stock";
 import { ServerApiService } from "@/services/serverApiService";
@@ -24,22 +21,6 @@ export default async function TickerPage({ params }: TickerPageProps) {
           summary={stockData}
           className="mb-8"
         />
-
-        {/* Financial Health Scores Section */}
-        <section className="mb-8">
-          <div className="grid gap-8 lg:grid-cols-2">
-            {/* Biểu đồ Z-Score */}
-            <ZScoreChart ticker={ticker.toUpperCase()} />
-            
-            {/* Biểu đồ F-Score */}
-            <FScoreChart ticker={ticker.toUpperCase()} />
-          </div>
-        </section>
-
-        {/* F-Score Details Section */}
-        <section className="mb-8">
-          <FScoreDetails ticker={ticker.toUpperCase()} />
-        </section>
 
         {/* Stock Analysis Tabs */}
         <StockAnalysisTabsComponent

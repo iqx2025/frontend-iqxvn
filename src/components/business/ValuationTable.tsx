@@ -123,28 +123,28 @@ export function ValuationTable({ initialData }: ValuationTableProps) {
   };
 
   // Format cell value with comparison indicators
-  const formatCellValue = (key: keyof ValuationItem, value: any, item: ValuationItem) => {
+  const formatCellValue = (key: keyof ValuationItem, value: unknown, item: ValuationItem) => {
     const comparison = ValuationService.calculateValuationComparison(item);
     
     switch (key) {
       case 'symbol':
         return (
           <Link 
-            href={`/ma-chung-khoan/${value.toLowerCase()}`}
+            href={`/ma-chung-khoan/${String(value).toLowerCase()}`}
             className="font-semibold text-primary hover:underline"
           >
-            {value}
+            {String(value)}
           </Link>
         );
       
       case 'exchange':
-        return <Badge variant="outline">{value}</Badge>;
+        return <Badge variant="outline">{String(value)}</Badge>;
       
       case 'close_price':
-        return formatPrice(value);
+        return formatPrice(Number(value));
       
       case 'volume':
-        return formatNumber(value);
+        return formatNumber(Number(value));
       
       case 'pe_ratio':
         return (
@@ -152,7 +152,7 @@ export function ValuationTable({ initialData }: ValuationTableProps) {
             <span className={cn(
               comparison.isUndervaluedPE && 'text-green-500 font-medium'
             )}>
-              {value.toFixed(2)}
+              {Number(value).toFixed(2)}
             </span>
             {comparison.isUndervaluedPE && (
               <TrendingDown className="h-3 w-3 text-green-500" />
@@ -166,7 +166,7 @@ export function ValuationTable({ initialData }: ValuationTableProps) {
             <span className={cn(
               comparison.isUndervaluedPB && 'text-green-500 font-medium'
             )}>
-              {value.toFixed(2)}
+              {Number(value).toFixed(2)}
             </span>
             {comparison.isUndervaluedPB && (
               <TrendingDown className="h-3 w-3 text-green-500" />
@@ -176,28 +176,31 @@ export function ValuationTable({ initialData }: ValuationTableProps) {
       
       case 'sector_pe':
       case 'sector_pb':
-        return value.toFixed(2);
+        return Number(value).toFixed(2);
       
       case 'roa_pct':
       case 'gross_margin_pct':
-      case 'asset_turnover_pct':
+      case 'asset_turnover_pct': {
+        const numValue = Number(value);
         return (
           <span className={cn(
             'font-medium',
-            value > 0 ? 'text-green-500' : value < 0 ? 'text-red-500' : ''
+            numValue > 0 ? 'text-green-500' : numValue < 0 ? 'text-red-500' : ''
           )}>
-            {formatPercentage(value * 100)}
+            {formatPercentage(numValue * 100)}
           </span>
         );
+      }
       
-      case 'cfo':
-        const billion = value / 1000000000;
-        const million = value / 1000000;
+      case 'cfo': {
+        const numValue = Number(value);
+        const billion = numValue / 1000000000;
+        const million = numValue / 1000000;
         if (Math.abs(billion) >= 1) {
           return (
             <span className={cn(
               'font-medium',
-              value > 0 ? 'text-green-500' : value < 0 ? 'text-red-500' : ''
+              numValue > 0 ? 'text-green-500' : numValue < 0 ? 'text-red-500' : ''
             )}>
               {billion.toFixed(1)}B
             </span>
@@ -206,18 +209,19 @@ export function ValuationTable({ initialData }: ValuationTableProps) {
         return (
           <span className={cn(
             'font-medium',
-            value > 0 ? 'text-green-500' : value < 0 ? 'text-red-500' : ''
+            numValue > 0 ? 'text-green-500' : numValue < 0 ? 'text-red-500' : ''
           )}>
             {million.toFixed(0)}M
           </span>
         );
+      }
       
       case 'delta_roa_pct':
       case 'cfo_ln_profit':
-        return value.toFixed(2);
+        return Number(value).toFixed(2);
       
       default:
-        return value || '-';
+        return String(value || '-');
     }
   };
 

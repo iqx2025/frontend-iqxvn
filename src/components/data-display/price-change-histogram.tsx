@@ -19,7 +19,7 @@ interface PriceChangeHistogramProps {
 /**
  * Custom tooltip for the histogram
  */
-const CustomTooltip = ({ active, payload }: any) => {
+const CustomTooltip = ({ active, payload }: { active?: boolean; payload?: Array<{ payload: PriceChangeBin & { total: number } }> }) => {
   if (active && payload && payload[0]) {
     const data = payload[0].payload;
     

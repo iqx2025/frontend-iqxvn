@@ -17,10 +17,10 @@ export { default as MiniTrendChart } from './mini-trend-chart';
 // Other Data Display Components
 export { MarketOverview } from './market-overview';
 export { default as ForeignTradingChart } from './foreign-trading-chart';
-export { FinancialTable } from './financial-table';
-export { FinancialTableWithPeriodToggle } from './financial-table-with-period-toggle';
-export { FundHoldingsTable } from './fund-holdings-table';
-export { OwnershipPieChart } from './ownership-pie-chart';
-export { ShareholdersTable } from './shareholders-table';
-export { StockPriceChart } from './stock-price-chart';
-export { VnindexChart } from './vnindex-chart';
+export { default as FinancialTable } from './financial-table';
+export { default as FinancialTableWithPeriodToggle } from './financial-table-with-period-toggle';
+export { default as FundHoldingsTable } from './fund-holdings-table';
+export { default as OwnershipPieChart } from './ownership-pie-chart';
+export { default as ShareholdersTable } from './shareholders-table';
+export { default as StockPriceChart } from './stock-price-chart';
+export { default as VnindexChart } from './vnindex-chart';

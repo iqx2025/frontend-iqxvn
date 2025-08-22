@@ -58,7 +58,7 @@ export default function MarketLeaders() {
   };
 
   // Custom tooltip component
-  const CustomTooltip = ({ active, payload }: any) => {
+  const CustomTooltip = ({ active, payload }: { active?: boolean; payload?: Array<{ payload: MarketLeaderItem }> }) => {
     if (active && payload && payload[0]) {
       const data = payload[0].payload;
       return (

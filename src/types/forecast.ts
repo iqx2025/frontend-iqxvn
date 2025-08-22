@@ -51,6 +51,7 @@ export interface DetailedForecastData extends ForecastData {
 }
 
 export interface ForecastOverviewProps {
+  data?: ForecastData;
   className?: string;
 }
 

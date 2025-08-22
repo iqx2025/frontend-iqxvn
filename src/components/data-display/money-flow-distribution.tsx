@@ -19,7 +19,7 @@ interface MoneyFlowDistributionProps {
 /**
  * Custom tooltip for the money flow chart
  */
-const CustomTooltip = ({ active, payload }: any) => {
+const CustomTooltip = ({ active, payload }: { active?: boolean; payload?: Array<{ payload: MoneyFlowItem & { percentage: string } }> }) => {
   if (active && payload && payload[0]) {
     const data = payload[0].payload;
     const Icon = data.label === 'Tăng' ? TrendingUp : 
