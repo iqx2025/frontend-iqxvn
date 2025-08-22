@@ -3,11 +3,51 @@
 import { useEffect } from 'react';
 import Script from 'next/script';
 
+// Define proper types for n8n chat config
+interface N8nChatConfig {
+  webhookUrl: string;
+  target: string;
+  mode: 'window' | 'fullscreen';
+  chatInputKey: string;
+  chatSessionKey: string;
+  metadata: Record<string, unknown>;
+  initialMessages: string[];
+  i18n: {
+    en: {
+      title: string;
+      subtitle: string;
+      footer: string;
+      getStarted: string;
+      inputPlaceholder: string;
+      closeButtonTooltip: string;
+    };
+  };
+  theme: {
+    primaryColor: string;
+    chatWindowBackgroundColor: string;
+    chatMessagesBackgroundColor: string;
+    chatInputBackgroundColor: string;
+    chatInputTextColor: string;
+    chatTextColor: string;
+    userMessageBackgroundColor: string;
+    userMessageTextColor: string;
+    aiMessageBackgroundColor: string;
+    aiMessageTextColor: string;
+    aiThinkingAnimationColor: string;
+  };
+}
+
+declare global {
+  interface Window {
+    n8nChatConfig?: N8nChatConfig;
+  }
+}
+
 export default function N8nChatScript() {
   useEffect(() => {
     // Ensure window.n8nChat is available globally
     if (typeof window !== 'undefined') {
-      (window as any).n8nChatConfig = {
+      window.n8nChatConfig = {
         webhookUrl: 'https://ai.iqx.vn/webhook/e104e40e-6134-4825-a6f0-8a646d882662/chat',
         target: '#n8n-chat-widget',
         mode: 'window',

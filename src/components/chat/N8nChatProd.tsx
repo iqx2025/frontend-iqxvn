@@ -2,10 +2,47 @@
 
 import { useEffect, useState, useRef } from 'react';
 
+// Define proper types for n8n chat
+interface N8nChatConfig {
+  webhookUrl: string;
+  target: HTMLElement | string;
+  mode: 'window' | 'fullscreen';
+  chatInputKey: string;
+  chatSessionKey: string;
+  metadata: Record<string, unknown>;
+  initialMessages: string[];
+  i18n: {
+    en: {
+      title: string;
+      subtitle: string;
+      footer: string;
+      getStarted: string;
+      inputPlaceholder: string;
+      closeButtonTooltip: string;
+    };
+  };
+  theme: {
+    primaryColor: string;
+    chatWindowBackgroundColor: string;
+    chatMessagesBackgroundColor: string;
+    chatInputBackgroundColor: string;
+    chatInputTextColor: string;
+    chatTextColor: string;
+    userMessageBackgroundColor: string;
+    userMessageTextColor: string;
+    aiMessageBackgroundColor: string;
+    aiMessageTextColor: string;
+    aiThinkingAnimationColor: string;
+  };
+}
+
+// We don't know the exact type of the chat instance, so we'll use a broader type
+type N8nChatInstance = unknown;
+
 declare global {
   interface Window {
-    n8nChatInstance?: any;
-    n8nChatConfig?: any;
+    n8nChatInstance?: N8nChatInstance;
+    n8nChatConfig?: N8nChatConfig;
   }
 }
 
