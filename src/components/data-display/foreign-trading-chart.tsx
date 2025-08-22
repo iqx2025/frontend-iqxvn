@@ -3,10 +3,10 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
-import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
+import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Globe, BarChart3, TableIcon } from 'lucide-react';
+import { Globe, BarChart3, TableIcon, RefreshCw } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import { ApiService } from '@/services/api';
@@ -64,39 +64,62 @@ export default function ForeignTradingChart({ className = '' }: ForeignTradingCh
     }
   };
 
-
-
-
-
   return (
     <Card className={cn("w-full", className)}>
-      <CardHeader className="pb-4">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="p-2 rounded-lg bg-orange-100 dark:bg-orange-900/20">
-              <Globe className="h-5 w-5 text-orange-600 dark:text-orange-400" />
-            </div>
+      <CardHeader className="pb-3">
+        <div className="flex flex-col space-y-4 sm:space-y-0 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex items-center gap-2">
+            <Globe className="h-5 w-5 text-primary" />
             <div>
-              <CardTitle className="text-lg font-semibold">Giao dịch khối ngoại</CardTitle>
-              <p className="text-sm text-muted-foreground">
+              <CardTitle className="text-lg font-semibold">
+                Giao dịch khối ngoại
+              </CardTitle>
+              <p className="text-sm text-muted-foreground mt-1">
                 Top mã được khối ngoại quan tâm {getPeriodLabel(selectedPeriod).toLowerCase()}
               </p>
             </div>
           </div>
-        </div>
-
-        {/* Period Selection */}
-        <div className="flex gap-1">
-          <ToggleGroup
-            type="single"
-            value={selectedPeriod}
-            onValueChange={(value) => value && handlePeriodChange(value as ForeignTradingPeriod)}
-            size="sm"
-          >
-            <ToggleGroupItem value="today">Hôm nay</ToggleGroupItem>
-            <ToggleGroupItem value="week">Tuần</ToggleGroupItem>
-            <ToggleGroupItem value="month">Tháng</ToggleGroupItem>
-          </ToggleGroup>
+          
+          <div className="flex items-center gap-2">
+            {/* Period selector buttons */}
+            <div className="flex rounded-lg border bg-muted p-1">
+              <Button
+                variant={selectedPeriod === 'today' ? 'default' : 'ghost'}
+                size="sm"
+                onClick={() => handlePeriodChange('today')}
+                className="h-7 px-3 text-xs"
+              >
+                Hôm nay
+              </Button>
+              <Button
+                variant={selectedPeriod === 'week' ? 'default' : 'ghost'}
+                size="sm"
+                onClick={() => handlePeriodChange('week')}
+                className="h-7 px-3 text-xs"
+              >
+                Tuần
+              </Button>
+              <Button
+                variant={selectedPeriod === 'month' ? 'default' : 'ghost'}
+                size="sm"
+                onClick={() => handlePeriodChange('month')}
+                className="h-7 px-3 text-xs"
+              >
+                Tháng
+              </Button>
+            </div>
+            
+            {/* Refresh button */}
+            <Button
+              onClick={() => fetchForeignTradingData(selectedPeriod)}
+              disabled={loading}
+              variant="ghost"
+              size="icon"
+              className="h-8 w-8"
+            >
+              <RefreshCw className={cn("h-4 w-4", loading && "animate-spin")} />
+            </Button>
+          </div>
         </div>
       </CardHeader>
 
@@ -142,7 +165,7 @@ export default function ForeignTradingChart({ className = '' }: ForeignTradingCh
                 </div>
 
                 {/* Symmetric Chart */}
-                <div className="space-y-2">
+                <div className="space-y-0">
                   {Array.from({ length: 10 }).map((_, index) => {
                     const sellItem = data?.top_sell[index];
                     const buyItem = data?.top_buy[index];
@@ -158,7 +181,7 @@ export default function ForeignTradingChart({ className = '' }: ForeignTradingCh
                     const buyWidth = buyItem ? (Math.abs(buyItem.net_val) / maxValue) * 100 : 0;
 
                     return (
-                      <div key={index} className="flex items-center h-12">
+                      <div key={index} className="flex items-center h-10">
                         {/* Left side - Sell (Red bars) */}
                         <div className="flex-1 flex items-center justify-end pr-2">
                           <div className="flex items-center gap-2 w-full justify-end">
@@ -168,7 +191,7 @@ export default function ForeignTradingChart({ className = '' }: ForeignTradingCh
                                   {formatValue(sellItem.net_val)}
                                 </span>
                                 <div
-                                  className="h-8 bg-red-500 rounded-l-md flex items-center justify-start pl-2"
+                                  className="h-8 bg-red-500 rounded-l-xs flex items-center justify-start pl-2"
                                   style={{ width: `${sellWidth}%`, minWidth: '60px' }}
                                 >
                                   <span className="text-xs font-medium text-white">
@@ -189,7 +212,7 @@ export default function ForeignTradingChart({ className = '' }: ForeignTradingCh
                             {buyItem && (
                               <>
                                 <div
-                                  className="h-8 bg-green-500 rounded-r-md flex items-center justify-end pr-2"
+                                  className="h-8 bg-green-500 rounded-r-xs flex items-center justify-end pr-2"
                                   style={{ width: `${buyWidth}%`, minWidth: '60px' }}
                                 >
                                   <span className="text-xs font-medium text-white">
@@ -290,16 +313,7 @@ export default function ForeignTradingChart({ className = '' }: ForeignTradingCh
             </TabsContent>
           </Tabs>
         )}
-
-        {!loading && !error && data && (
-          <div className="mt-4 pt-4 border-t">
-            <p className="text-xs text-muted-foreground text-center">
-              Cập nhật lần cuối: {new Date(data.update_time * 1000).toLocaleString('vi-VN')} • 
-              Từ {data.from_date} đến {data.to_date}
-            </p>
-          </div>
-        )}
-
+        
         {!loading && !error && (!data || (data.top_buy.length === 0 && data.top_sell.length === 0)) && (
           <div className="flex items-center justify-center h-64 text-muted-foreground">
             <p>Không có dữ liệu để hiển thị</p>

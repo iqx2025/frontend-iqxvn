@@ -148,11 +148,11 @@ export function MarketOverview({ stats, loading = false }: MarketOverviewProps) 
           <div className="text-3xl font-bold text-foreground mb-2">
             {exchanges.length}
           </div>
-          <div className="space-y-1">
+          <div className="grid grid-cols-3 gap-4">
             {exchanges.map((exchange, index) => (
               <div
                 key={exchange.exchange || index}
-                className="flex justify-between items-center text-xs"
+                className="flex gap-1 items-center text-xs"
               >
                 <span className="text-muted-foreground font-medium">
                   {exchange.exchange || 'N/A'}:

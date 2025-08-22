@@ -184,7 +184,7 @@ export default function StocksPage() {
       </div>
 
       {/* Market Overview Stats */}
-      <div className="mb-8">
+      <div className="mb-8 hidden">
         <MarketOverview stats={marketStats} loading={loading} />
       </div>
 
@@ -205,7 +205,7 @@ export default function StocksPage() {
       </div>
 
       {/* Tabs */}
-      <div className="flex flex-wrap gap-2 mb-6 border-b pb-2">
+      <div className="hidden flex-wrap gap-2 mb-6 border-b pb-2">
         <Button
           variant={activeTab === 'all' ? 'default' : 'ghost'}
           onClick={() => setActiveTab('all')}

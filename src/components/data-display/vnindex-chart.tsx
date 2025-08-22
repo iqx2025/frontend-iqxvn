@@ -5,9 +5,18 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import { Toggle } from '@/components/ui/toggle';
-import { TrendingUp, TrendingDown, BarChart3, Activity } from 'lucide-react';
+import { 
+  TrendingUp, 
+  TrendingDown, 
+  BarChart3, 
+  Activity,
+  Clock,
+  DollarSign,
+  ChartBar
+} from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useTheme } from 'next-themes';
+import { Separator } from '@/components/ui/separator';
 import {
   LineChart,
   Line,
@@ -84,12 +93,21 @@ export default function VNIndexChart({
     setSelectedPeriod(period);
   };
 
-  // Calculate price change
+  // Calculate price change and statistics
   const currentPrice = priceData.length > 0 ? priceData[priceData.length - 1]?.close : 0;
   const previousPrice = priceData.length > 1 ? priceData[0]?.close : currentPrice;
   const priceChange = currentPrice - previousPrice;
   const priceChangePercent = previousPrice !== 0 ? (priceChange / previousPrice) * 100 : 0;
   const isPositive = priceChange >= 0;
+  
+  // Calculate today's statistics (using latest data point)
+  const todayData = priceData.length > 0 ? priceData[priceData.length - 1] : null;
+  const openPrice = todayData?.open || 0;
+  const highPrice = todayData?.high || 0;
+  const lowPrice = todayData?.low || 0;
+  const totalVolume = priceData.reduce((sum, data) => sum + (data.volume || 0), 0);
+  const avgVolume = priceData.length > 0 ? totalVolume / priceData.length : 0;
+  const totalValue = totalVolume * currentPrice / 1000000000; // Convert to billion VND
 
   // Chart colors based on theme and price direction
   const colors = {
@@ -319,7 +337,7 @@ export default function VNIndexChart({
                   ) : (
                     <TrendingDown className="h-3 w-3" />
                   )}
-                  {priceChange.toFixed(2)} ({priceChangePercent.toFixed(2)}%)
+                  {priceChange > 0 ? '+' : ''}{priceChange.toFixed(2)} ({priceChangePercent > 0 ? '+' : ''}{priceChangePercent.toFixed(2)}%)
                 </Badge>
               </div>
             </div>
@@ -369,31 +387,104 @@ export default function VNIndexChart({
       </CardHeader>
 
       <CardContent>
-        {loading && (
-          <div className="flex items-center justify-center w-full overflow-hidden h-[220px] sm:h-[260px] md:h-[300px] lg:h-[350px]">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
-          </div>
-        )}
+        <div className="flex flex-col lg:flex-row gap-4">
 
-        {error && (
-          <div className="flex items-center justify-center w-full overflow-hidden h-[220px] sm:h-[260px] md:h-[300px] lg:h-[350px] text-destructive">
-            <p>{error}</p>
-          </div>
-        )}
+           <div className="lg:w-80 space-y-4">
+            {/* Current Session Stats */}
+            <div className="bg-muted/30 rounded-lg p-4 space-y-3">
+              <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
+                <Clock className="h-4 w-4" />
+                <span>Phiên giao dịch</span>
+              </div>
+              
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-1">
+                  <p className="text-xs text-muted-foreground">Mở cửa</p>
+                  <p className="text-sm font-semibold">{openPrice.toFixed(2)}</p>
+                </div>
+                <div className="space-y-1">
+                  <p className="text-xs text-muted-foreground">Cao nhất</p>
+                  <p className="text-sm font-semibold text-green-600 dark:text-green-400">
+                    {highPrice.toFixed(2)}
+                  </p>
+                </div>
+                <div className="space-y-1">
+                  <p className="text-xs text-muted-foreground">Thấp nhất</p>
+                  <p className="text-sm font-semibold text-red-600 dark:text-red-400">
+                    {lowPrice.toFixed(2)}
+                  </p>
+                </div>
+                <div className="space-y-1">
+                  <p className="text-xs text-muted-foreground">Đóng cửa</p>
+                  <p className="text-sm font-semibold">{currentPrice.toFixed(2)}</p>
+                </div>
+              </div>
+            </div>
 
-        {!loading && !error && priceData.length > 0 && (
-          <div ref={containerRef} className="w-full overflow-hidden h-[220px] sm:h-[260px] md:h-[300px] lg:h-[350px]" style={{ height: `${height}px` }}>
-            <ResponsiveContainer width="100%" height="100%">
-              {renderChart()}
-            </ResponsiveContainer>
-          </div>
-        )}
+            <Separator />
 
-        {!loading && !error && priceData.length === 0 && (
-          <div className="flex items-center justify-center w-full overflow-hidden h-[220px] sm:h-[260px] md:h-[300px] lg:h-[350px] text-muted-foreground">
-            <p>Không có dữ liệu để hiển thị</p>
+            {/* Volume Stats */}
+            <div className="bg-muted/30 rounded-lg p-4 space-y-3">
+              <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
+                <ChartBar className="h-4 w-4" />
+                <span>Khối lượng giao dịch</span>
+              </div>
+              
+              <div className="space-y-3">
+                <div>
+                  <p className="text-xs text-muted-foreground">Tổng khối lượng</p>
+                  <p className="text-lg font-semibold">
+                    {(totalVolume / 1000000).toFixed(1)}M
+                  </p>
+                </div>
+                <div>
+                  <p className="text-xs text-muted-foreground">Giá trị giao dịch</p>
+                  <p className="text-lg font-semibold flex items-center gap-1">
+                    <DollarSign className="h-4 w-4" />
+                    {totalValue.toFixed(2)} tỷ VNĐ
+                  </p>
+                </div>
+                <div>
+                  <p className="text-xs text-muted-foreground">KL trung bình</p>
+                  <p className="text-sm font-medium">
+                    {(avgVolume / 1000000).toFixed(1)}M
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
-        )}
+          {/* Chart Section */}
+          <div className="flex-1">
+            {loading && (
+              <div className="flex items-center justify-center w-full overflow-hidden h-[220px] sm:h-[260px] md:h-[300px] lg:h-[350px]">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+              </div>
+            )}
+
+            {error && (
+              <div className="flex items-center justify-center w-full overflow-hidden h-[220px] sm:h-[260px] md:h-[300px] lg:h-[350px] text-destructive">
+                <p>{error}</p>
+              </div>
+            )}
+
+            {!loading && !error && priceData.length > 0 && (
+              <div ref={containerRef} className="w-full overflow-hidden h-[220px] sm:h-[260px] md:h-[300px] lg:h-[350px]" style={{ height: `${height}px` }}>
+                <ResponsiveContainer width="100%" height="100%">
+                  {renderChart()}
+                </ResponsiveContainer>
+              </div>
+            )}
+
+            {!loading && !error && priceData.length === 0 && (
+              <div className="flex items-center justify-center w-full overflow-hidden h-[220px] sm:h-[260px] md:h-[300px] lg:h-[350px] text-muted-foreground">
+                <p>Không có dữ liệu để hiển thị</p>
+              </div>
+            )}
+          </div>
+
+          {/* Statistics Panel */}
+         
+        </div>
       </CardContent>
     </Card>
   );

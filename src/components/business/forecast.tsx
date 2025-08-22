@@ -2,28 +2,23 @@
 
 import React, { useState } from "react";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { Badge } from "@/components/ui/badge";
 import {
   ArrowDownWideNarrow,
-  ArrowRight,
   ArrowUpWideNarrow,
   ChartLine,
-  InfoIcon,
   TrendingDown,
   TrendingUp,
   Activity,
   BarChart3,
   Target,
 } from "lucide-react";
-import { ForecastData, DetailedForecastData, StatusType, ForecastOverviewProps } from "@/types/forecast";
-import ForecastDetailDialog from "./forecast-detail-dialog";
+import { ForecastData, StatusType, ForecastOverviewProps } from "@/types/forecast";
+import SentimentGaugeVNINDEX from "@/components/data-display/sentiment-gauge-vn-index";
 
 const ForecastOverview: React.FC<ForecastOverviewProps> = ({
   data,
-  className,
-  onViewDetails
+  className
 }) => {
   const [isDetailDialogOpen, setIsDetailDialogOpen] = useState(false);
 
@@ -40,77 +35,6 @@ const ForecastOverview: React.FC<ForecastOverviewProps> = ({
 
   const forecastData = data || defaultForecastData;
 
-  // Detailed forecast data for the dialog
-  const detailedForecastData: DetailedForecastData = {
-    ...forecastData,
-    analysis: {
-      summary: "Thị trường đang cho thấy những tín hiệu tích cực với xu hướng tăng trưởng ổn định. Các chỉ số kỹ thuật và động lượng đều hỗ trợ cho xu hướng này, tuy nhiên vẫn cần theo dõi các yếu tố vĩ mô.",
-      keyFactors: [
-        "Thanh khoản thị trường cải thiện đáng kể",
-        "Dòng tiền ngoại tiếp tục đổ vào thị trường",
-        "Các chỉ số kinh tế vĩ mô cho tín hiệu tích cực",
-        "Tâm lý nhà đầu tư được cải thiện"
-      ],
-      risks: [
-        "Biến động từ thị trường quốc tế",
-        "Áp lực bán từ nhà đầu tư ngắn hạn",
-        "Rủi ro thanh khoản tại một số mã cổ phiếu",
-        "Tác động từ chính sách tiền tệ"
-      ],
-      opportunities: [
-        "Cơ hội đầu tư vào các cổ phiếu có fundamentals tốt",
-        "Xu hướng tăng trưởng dài hạn của thị trường",
-        "Cải thiện trong báo cáo tài chính doanh nghiệp",
-        "Hỗ trợ từ chính sách kinh tế vĩ mô"
-      ]
-    },
-    metrics: {
-      riskRatio: {
-        label: "Tỉ lệ rủi ro",
-        value: `${forecastData.riskRatio}%`,
-        status: "positive",
-        description: "Tỉ lệ rủi ro thấp cho thấy thị trường đang ở trạng thái ổn định"
-      },
-      macro: {
-        label: "Vĩ mô",
-        value: forecastData.macro === "positive" ? "Khả quan" : forecastData.macro === "negative" ? "Kém khả quan" : "Trung tính",
-        status: forecastData.macro,
-        description: "Các yếu tố kinh tế vĩ mô đang ở mức trung tính, cần theo dõi thêm"
-      },
-      momentum: {
-        label: "Động lượng",
-        value: forecastData.momentum === "positive" ? "Khả quan" : forecastData.momentum === "negative" ? "Kém khả quan" : "Trung tính",
-        status: forecastData.momentum,
-        description: "Động lượng thị trường tích cực với xu hướng tăng trưởng bền vững"
-      },
-      technical: {
-        label: "Kỹ thuật",
-        value: forecastData.technical === "positive" ? "Khả quan" : forecastData.technical === "negative" ? "Kém khả quan" : "Trung tính",
-        status: forecastData.technical,
-        description: "Các chỉ báo kỹ thuật cho tín hiệu tích cực cho xu hướng tăng"
-      }
-    },
-    recommendations: {
-      shortTerm: [
-        "Tăng tỷ trọng cổ phiếu trong danh mục đầu tư",
-        "Tập trung vào các cổ phiếu có thanh khoản tốt",
-        "Theo dõi sát các tin tức thị trường",
-        "Đặt lệnh stop-loss để bảo vệ vốn"
-      ],
-      longTerm: [
-        "Xây dựng danh mục đầu tư cân bằng",
-        "Đầu tư định kỳ để tận dụng cost averaging",
-        "Tập trung vào các doanh nghiệp có fundamentals mạnh",
-        "Duy trì tỷ lệ tiền mặt hợp lý"
-      ]
-    },
-    marketConditions: {
-      volatility: 15.2,
-      volume: "Cao",
-      sentiment: "positive"
-    }
-  };
-
   const getTrendIcon = () => {
     return forecastData.trend === "up" ? (
       <TrendingUp className="size-5 text-green-500 dark:text-green-400" />
@@ -121,29 +45,6 @@ const ForecastOverview: React.FC<ForecastOverviewProps> = ({
 
   const getTrendColor = () => {
     return forecastData.trend === "up" ? "text-green-500 dark:text-green-400" : "text-red-500 dark:text-red-400";
-  };
-
-  const getStatusColor = (status: StatusType) => {
-    switch (status) {
-      case "positive": return "text-green-500 dark:text-green-400";
-      case "negative": return "text-red-500 dark:text-red-400";
-      case "neutral": return "text-orange-500 dark:text-orange-400";
-      default: return "text-gray-500 dark:text-gray-400";
-    }
-  };
-
-  const getStatusIcon = (status: StatusType) => {
-    switch (status) {
-      case "positive": return <Activity className="size-3 text-green-500 dark:text-green-400" />;
-      case "negative": return <BarChart3 className="size-3 text-red-500 dark:text-red-400" />;
-      case "neutral": return <Target className="size-3 text-orange-500 dark:text-orange-400" />;
-      default: return <Activity className="size-3 text-gray-500 dark:text-gray-400" />;
-    }
-  };
-
-  const handleViewDetails = () => {
-    setIsDetailDialogOpen(true);
-    onViewDetails?.(detailedForecastData);
   };
 
   return (
@@ -190,11 +91,10 @@ const ForecastOverview: React.FC<ForecastOverviewProps> = ({
                 <div className="relative">
                   <div className="w-full bg-muted rounded-full h-2 overflow-hidden">
                     <div
-                      className={`h-full rounded-full transition-all duration-1000 ease-out ${
-                        forecastData.trend === "up"
-                          ? "bg-gradient-to-r from-green-400 to-green-600"
-                          : "bg-gradient-to-r from-red-400 to-red-600"
-                      }`}
+                      className={`h-full rounded-full transition-all duration-1000 ease-out ${forecastData.trend === "up"
+                        ? "bg-gradient-to-r from-green-400 to-green-600"
+                        : "bg-gradient-to-r from-red-400 to-red-600"
+                        }`}
                       style={{ width: `${forecastData.confidence}%` }}
                     />
                   </div>
@@ -203,105 +103,15 @@ const ForecastOverview: React.FC<ForecastOverviewProps> = ({
             </div>
 
             {/* Compact metrics grid */}
-            <div className="lg:col-span-2 grid grid-cols-2 gap-3">
-              <div className="group p-3 rounded-lg bg-background/60 backdrop-blur-sm border border-border/50 hover:border-primary/30 transition-all duration-300">
-                <div className="flex items-center gap-1 justify-between mb-1">
-                  <span className="text-xs font-medium text-muted-foreground">Rủi ro</span>
-                  <Tooltip>
-                    <TooltipTrigger>
-                      <InfoIcon className="size-3 opacity-60 hover:opacity-100 transition-opacity" />
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p className="max-w-xs">Tỉ lệ rủi ro của thị trường trong tuần này.</p>
-                    </TooltipContent>
-                  </Tooltip>
-                </div>
-                <div className="flex items-center gap-2">
-                  {getStatusIcon("positive")}
-                  <span className="font-bold text-green-500 text-lg">{forecastData.riskRatio}%</span>
-                </div>
-              </div>
-
-              <div className="group p-3 rounded-lg bg-background/60 backdrop-blur-sm border border-border/50 hover:border-primary/30 transition-all duration-300">
-                <div className="flex items-center gap-1 justify-between mb-1">
-                  <span className="text-xs font-medium text-muted-foreground">Vĩ mô</span>
-                  <Tooltip>
-                    <TooltipTrigger>
-                      <InfoIcon className="size-3 opacity-60 hover:opacity-100 transition-opacity" />
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p>Đánh giá các yếu tố kinh tế vĩ mô ảnh hưởng đến thị trường.</p>
-                    </TooltipContent>
-                  </Tooltip>
-                </div>
-                <div className="flex items-center gap-2">
-                  {getStatusIcon(forecastData.macro)}
-                  <span className={`font-bold ${getStatusColor(forecastData.macro)} text-sm`}>
-                    {forecastData.macro === "positive" ? "Khả quan" :
-                      forecastData.macro === "negative" ? "Kém khả quan" : "Trung tính"}
-                  </span>
-                </div>
-              </div>
-
-              <div className="group p-3 rounded-lg bg-background/60 backdrop-blur-sm border border-border/50 hover:border-primary/30 transition-all duration-300">
-                <div className="flex items-center gap-1 justify-between mb-1">
-                  <span className="text-xs font-medium text-muted-foreground">Động lượng</span>
-                  <Tooltip >
-                    <TooltipTrigger>
-                      <InfoIcon className="size-3 opacity-60 hover:opacity-100 transition-opacity" />
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p>Đánh giá về động lượng hiện tại của thị trường và khả năng duy trì xu hướng.</p>
-                    </TooltipContent>
-                  </Tooltip>
-                </div>
-                <div className="flex items-center gap-2">
-                  {getStatusIcon(forecastData.momentum)}
-                  <span className={`font-bold ${getStatusColor(forecastData.momentum)} text-sm`}>
-                    {forecastData.momentum === "positive" ? "Khả quan" :
-                      forecastData.momentum === "negative" ? "Kém khả quan" : "Trung tính"}
-                  </span>
-                </div>
-              </div>
-
-              <div className="group p-3 rounded-lg bg-background/60 backdrop-blur-sm border border-border/50 hover:border-primary/30 transition-all duration-300">
-                <div className="flex items-center gap-1 justify-between mb-1">
-                  <span className="text-xs font-medium text-muted-foreground">Kỹ thuật</span>
-                  <Tooltip>
-                    <TooltipTrigger>
-                      <InfoIcon className="size-3 opacity-60 hover:opacity-100 transition-opacity" />
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p className="max-w-xs">Đánh giá dựa trên các chỉ báo kỹ thuật và biểu đồ giá.</p>
-                    </TooltipContent>
-                  </Tooltip>
-                </div>
-                <div className="flex items-center gap-2">
-                  {getStatusIcon(forecastData.technical)}
-                  <span className={`font-bold ${getStatusColor(forecastData.technical)} text-sm`}>
-                    {forecastData.technical === "positive" ? "Khả quan" :
-                      forecastData.technical === "negative" ? "Kém khả quan" : "Trung tính"}
-                  </span>
-                </div>
-              </div>
+            <div className="lg:col-span-2">
+              <SentimentGaugeVNINDEX />
             </div>
           </div>
         </CardContent>
 
         {/* Compact Footer */}
         <CardFooter className="relative z-10 bg-gradient-to-r from-muted/30 to-muted/10 backdrop-blur-sm border-t border-border/50 py-3">
-          <div className="flex items-center justify-between w-full">
-            <div className="text-xs text-muted-foreground">
-              Cập nhật lần cuối: {forecastData.lastUpdated}
-            </div>
-            <Button
-              onClick={handleViewDetails}
-              size="sm"
-            >
-              <span className="font-medium">Chi tiết</span>
-              <ArrowRight className="size-3" />
-            </Button>
-          </div>
+          <p className="text-sm">Cập nhật lần cuối: 22/08/2025</p>
         </CardFooter>
 
         {/* Subtle background decorative elements */}
@@ -314,13 +124,6 @@ const ForecastOverview: React.FC<ForecastOverviewProps> = ({
           <div className="absolute top-0 right-0 w-1/4 h-full bg-gradient-to-l from-primary/3 to-transparent" />
         </div>
       </Card>
-
-      {/* Detail Dialog */}
-      <ForecastDetailDialog
-        open={isDetailDialogOpen}
-        onOpenChange={setIsDetailDialogOpen}
-        data={detailedForecastData}
-      />
     </>
   );
 };

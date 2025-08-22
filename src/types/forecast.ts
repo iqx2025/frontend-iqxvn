@@ -51,9 +51,7 @@ export interface DetailedForecastData extends ForecastData {
 }
 
 export interface ForecastOverviewProps {
-  data?: ForecastData;
   className?: string;
-  onViewDetails?: (data: DetailedForecastData) => void;
 }
 
 export interface ForecastDetailDialogProps {

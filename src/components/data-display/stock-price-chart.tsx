@@ -48,7 +48,7 @@ export default function StockPriceChart({
   className = ''
 }: StockPriceChartProps) {
   const [priceData, setPriceData] = useState<PriceData[]>([]);
-  const [selectedPeriod, setSelectedPeriod] = useState<ChartPeriod>('1d');
+  const [selectedPeriod, setSelectedPeriod] = useState<ChartPeriod>('1y');
   const [chartType, setChartType] = useState<ChartType>('area');
   const [showVolume, setShowVolume] = useState<boolean>(false);
   const [loading, setLoading] = useState(false);

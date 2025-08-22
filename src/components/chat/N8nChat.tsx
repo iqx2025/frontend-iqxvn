@@ -7,6 +7,7 @@ export default function N8nChat() {
   useEffect(() => {
     // Dynamically import the chat widget to avoid SSR issues
     const loadChat = async () => {
+      
       const { createChat } = await import('@n8n/chat');
       
       createChat({
@@ -21,7 +22,7 @@ export default function N8nChat() {
         ],
         i18n: {
           en: {
-            title: 'IQX AI',
+            title: 'IQX',
             subtitle: 'Powered by iqx.vn',
             footer: '',
             getStarted: 'Bắt đầu chat',

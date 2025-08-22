@@ -202,7 +202,7 @@ export default function StockAnalysisTabsComponent({ ticker }: StockAnalysisTabs
   const [activeTab, setActiveTab] = useState("technical");
 
   return (
-    <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+    <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full mb-8">
       {/* Tab Navigation */}
       <TabsList className="w-full justify-start gap-1 overflow-x-auto sm:overflow-visible">
         <TabsTrigger value="chart" className="flex-none whitespace-nowrap px-4 py-2">
